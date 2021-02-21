@@ -11,7 +11,6 @@ WHITE = (255,255,255)
 clock = pygame.time.Clock()
 window = pygame.display.set_mode((screen_width, screen_height))
 
-
 #MUSIC
 start_sound = pygame.mixer.Sound('d:\Desktop\pythontrash\Pygame\PONG\Pong4.0\Pong_model\pongStart.mp3')
 start_sound.set_volume(0.2)
@@ -50,12 +49,11 @@ button_press.set_volume(0.3)
 paddle_velocity = 8
 paddle_width = 20
 paddle_height = 0
-#original 180
 
 #PongBall Varables
 ball_size = 12
 
-#MAKE SURE TO ALWAYS CHANGE THIS DEPENDING ON THE SYSTEM
+#BALL LOADED PICTURE
 pong_ball = pygame.image.load("d:\Desktop\pythontrash\Pygame\PONG\Pong4.0\Pong_model\PongBall.png")
 pong_ball = pygame.transform.scale(pong_ball, (ball_size, ball_size))
 
@@ -106,7 +104,6 @@ player_1 = ()
 player_2 = ()
 paddle_group.add(player_1,player_2)
 
-
 #Player Controls
 def playerPaddle():
     #Player1(left)
@@ -114,14 +111,11 @@ def playerPaddle():
         player_1.moveUp()
     if key[pygame.K_s]:
         player_1.moveDown()
-
-
     #Player2(right)
     if key[pygame.K_i]:
         player_2.moveUp()
     if key[pygame.K_k]:
         player_2.moveDown()
-
     paddle_group.draw(window)
 
 #Buttons
@@ -134,19 +128,15 @@ class Button():
         self.x = screen_width/2
         self.y = y
         self.text = text
-    
     def draw(self, centertext):
         #outline
         pygame.draw.rect(window, WHITE, (self.x - self.width/2 - 4, self.y - self.height/2 - 4, self.width + 8, self.height + 8), 0)
-
         #button
         pygame.draw.rect(window, self.color, (self.x - self.width/2, self.y - self.height/2, self.width, self.height), 0)
-        
         if self.text != '':
             font = pygame.font.SysFont('Corbel',70)
             word = font.render(self.text, 0 , WHITE)
             window.blit(word, (self.x - centertext, self.y - self.height/2 + 5))
-
     #mouse interaction with button
     def isOver(self, mouse_position):
         if ((mouse_position[0] >= (self.x - self.width/2)) and (mouse_position[0] <= (self.x + self.width/2))) and ((mouse_position[1] >= (self.y - self.height/2)) and (mouse_position[1] <= (self.y + self.height/2))):
@@ -167,8 +157,6 @@ exit_button = Button(screen_height - 50, 'Exit')
 
 def menuScreen():    
     title = font.render("Pong.", 0 , WHITE)
-
-    
     window.blit(title, (screen_width/2 - 200, 100))
     start_button.draw(70)
     option_button.draw(105)
@@ -182,8 +170,6 @@ back_button = Button(screen_height - 50, 'Back')
 
 def optionScreen():
     title = font.render("Options.", 0 , WHITE)
-
-
     window.blit(title, (screen_width/2 - 300, 50))
     window.blit(font_small.render("Difficulty.", 0 , WHITE), (screen_width/2 - 175, 230))
     easy_diff.draw(70)
@@ -194,14 +180,13 @@ def optionScreen():
 #Pause Screen
 resume_button = Button(screen_height - 350, 'Resume')
 menu_button = Button(screen_height - 250, 'Main Menu')
+
 def pauseScreen():
     title = font.render("Pause.", 0 , WHITE)
-
     window.blit(font_small.render("Oi, why'd ya stop?", 0 , WHITE), (screen_width/2 - 350, 100))
     resume_button.draw(110)
     menu_button.draw(150)
     exit_button.draw(55)
-
 
 left_point = 0
 right_point = 0
@@ -246,7 +231,6 @@ while running:
                     button_press.play()
                     pygame.time.delay(150)
                     pygame.quit()
-
         if start_button.isOver(mouse_pos): #start game button
             start_button.draw(70)
             if event.type == click:
@@ -260,9 +244,6 @@ while running:
                     player_1 = Paddle(20, screen_height/2)
                     player_2 = Paddle(screen_width - 20, screen_height/2)
                     paddle_group.add(player_1,player_2)
-
-                
-    
         if option_button.isOver(mouse_pos): #option button 
             option_button.draw(105)
             if event.type == click:
@@ -284,8 +265,6 @@ while running:
                 player_1 = Paddle(20, screen_height/2)
                 player_2 = Paddle(screen_width - 20, screen_height/2)
                 paddle_group.add(player_1,player_2)
-
-
         if normal_diff.isOver(mouse_pos):
             normal_diff.draw(100)
             if event.type == click:
@@ -295,11 +274,7 @@ while running:
                 paddle_height = 200
                 player_1 = Paddle(20, screen_height/2)
                 player_2 = Paddle(screen_width - 20, screen_height/2)
-                paddle_group.add(player_1,player_2)
-
-
-
-        
+                paddle_group.add(player_1,player_2) 
         if hard_diff.isOver(mouse_pos):
             hard_diff.draw(70)
             if event.type == click:
@@ -310,10 +285,6 @@ while running:
                 player_1 = Paddle(20, screen_height/2)
                 player_2 = Paddle(screen_width - 20, screen_height/2)
                 paddle_group.add(player_1,player_2)
-
-        
-
-
         if back_button.isOver(mouse_pos):
             back_button.draw(70)
             if event.type == click:
@@ -336,18 +307,16 @@ while running:
             pygame.time.delay(3500)
             game_song.play()
             game_start = True
-
         if game_start == True: 
             ball.ballMove()
+
             #Ball hits a paddle
             if pygame.sprite.collide_rect(player_1, ball) or pygame.sprite.collide_rect(player_2, ball):
                 hit_sound.play()
-                ball_x_vel *= -speed_multiplier
-            
+                ball_x_vel *= -speed_multiplier   
             #Ball hits top/bottom wall
             if (ball.rect.y >= screen_height) or (ball.rect.y <= 0):
                 ball_y_vel *= -1
-
             #Player loses
             if (ball.rect.x > screen_width + 20):
                 left_point += 1
@@ -382,7 +351,6 @@ while running:
                     pygame.mixer.unpause()
                     pause = False
                     game_start = True
-
             if menu_button.isOver(mouse_pos): #goes back to main menu
                 menu_button.draw(150)
                 if event.type == click:
@@ -391,8 +359,7 @@ while running:
                     left_point = 0
                     right_point = 0
                     pause = False
-                    main_menu = True
-            
+                    main_menu = True 
             if exit_button.isOver(mouse_pos):
                 exit_button.draw(55)
                 if event.type == click:
